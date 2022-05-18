@@ -25,6 +25,11 @@ Require at least python 3 to run
 
 
 ```sh
-python main.py
+pip install .
 ```
 
+Then run drive
+
+```sh
+drive
+```
