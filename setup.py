@@ -8,5 +8,8 @@ setup(name='robot-toy',
       author_email='pusapanich.phurich@gmail.com',
       license='MIT',
       packages=['toy_car'],
-      scripts=['bin/drive.py'],
+      entry_points={
+            'console_scripts': ['drive=toy_car.drive:main'],
+      },
+      test_suite="toy_car.tests",
       zip_safe=False)
