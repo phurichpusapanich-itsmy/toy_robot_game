@@ -23,6 +23,10 @@ The robot can:
 
 ## How to run
 
+Fork and clone this repository, or download the zip file and extract it.
+
+After that you will need to pip install
+
 ```sh
 pip install .
 ```
