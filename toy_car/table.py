@@ -11,8 +11,6 @@ class Table:
 
     def check_position(self, x, y):
 
-        print(x, y)
-
         return x in range(0, self.width) and y in range(0, self.height)
 
 

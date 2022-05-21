@@ -9,7 +9,7 @@ setup(name='robot-toy',
       license='MIT',
       packages=['toy_car'],
       entry_points={
-            'console_scripts': ['drive=toy_car.drive:main'],
+            'console_scripts': ['drive=toy_car.command_reader:main'],
       },
       test_suite="toy_car.tests",
       zip_safe=False)

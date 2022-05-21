@@ -7,35 +7,25 @@ from toy_car.table import Table
         - 1 = Has car
 """
 
-table_top = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0]
-]
 
-
-def run_car():
+def run_car(valid_commands):
 
     # Allocate a car to a table, but the car has not been placed yet.
     table = Table()
     car = Car(table)
 
-    while True:
+    # The commands come in format for a list with format [(string, int, int, string), string string, string]
+    # The commands are trusted as they have been validated in the command processor, therefore we don't do checks here.
+    for index, item in enumerate(valid_commands):
 
-        if not car.has_placed:
+        # if it is a tuple, we expect a place
+        if type(item) is tuple:
 
-            placement_x = input('Please place a x position for your car')
-            placement_y = input('Please place a y position for your car')
-            placement_facing = input('What is the direction that your car is facing?')
-
-            car.place(int(placement_x), int(placement_y), placement_facing)
-            car.report()
+            car.place(item[1], item[2], item[3])
 
         else:
 
-            command = input("Input commands, MOVE, LEFT, RIGHT, REPORT")
+            command = item
 
             if command == "REPORT":
 
@@ -45,19 +35,10 @@ def run_car():
 
                 car.move()
 
-            elif command == "ROTATE":
+            elif command == "LEFT":
 
-                car.rotate_south()
+                car.rotate('LEFT')
 
-            elif command == "EXIT":
+            elif command == "RIGHT":
 
-                break
-
-            else:
-                print("Not yet implement")
-
-
-if __name__ == '__main__':
-    run_car()
-
-
+                car.rotate("RIGHT")

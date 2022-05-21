@@ -1,14 +1,6 @@
 from toy_car.utilities import check_has_placed
-
-# Some static constance to handle turning
-
-direction = {
-
-    "NORTH": 1,
-    "SOUTH": -1,
-    "WEST": -1,
-    "EAST": 1
-}
+from toy_car.settings import DIRECTION, DIRECTION_MOVE_VALUES, INVERSE_DIRECTION
+from toy_car.table import Table
 
 
 class Car:
@@ -18,14 +10,16 @@ class Car:
     A car is given a 2D grid to drive on
 
     Function:
-        Forward - Move forward
-        Left - Move left
-        Right - Move right
-        Backward - Move backward
+        place - params: x, y, facing
+        rotate - params: which(LEFT, RIGHT)
+        move - params:
+        compute_command - params: command
+
+    The settings are declared in settings.py, you will not able to drive a car without settings
 
     """
 
-    def __init__(self, table):
+    def __init__(self, table: Table):
         self.has_placed = False
         self.x = None
         self.y = None
@@ -40,18 +34,18 @@ class Car:
         if not isinstance(y, int):
             raise TypeError("bar must be set to an integer")
 
-        self.has_placed = True
+        if not self.table.check_position(x, y):
+            raise IndexError("A car cannot be placed on that posit6ion")
 
+        self.has_placed = True
         self.x = x
         self.y = y
 
         # When placing facing/direction, check if those are keys in the direction dict declared above
-        if facing in direction:
+        if facing in DIRECTION:
             self.facing = facing
         else:
-            raise ValueError("Improper value for facing")
-
-        print("A car has been placed at ({0}, {1}) and is facing {2}".format(self.x, self.y, self.facing))
+            raise ValueError("A car cannot be placed on that position")
 
     @check_has_placed
     def report(self):
@@ -62,35 +56,31 @@ class Car:
     def move(self):
 
         # Move +1 if NORTH MOVE -1 If SOUTH
+
+        move_val = DIRECTION_MOVE_VALUES[self.facing]
         if self.facing == "NORTH" or self.facing == "SOUTH":
-            move_val = direction[self.facing]
             can_move = self.table.check_position(self.x, self.y + move_val)
             if can_move:
-                print("BEEP!! BEEP!!, MOVING {}".format(self.facing))
                 self.y = self.y + move_val
-            else:
-                print("Cannot go to {0} {1} because the table is too small!!".format(self.x, self.y + move_val))
+                return True
+        # Move +1 if EAST and MOVE -1 if WEST
+        elif self.facing == "WEST" or self.facing == "EAST":
+            can_move = self.table.check_position(self.x + move_val, self.y)
+            if can_move:
+                self.x = self.x + move_val
+                return True
+
+        print("Cannot move")
+
+        return False
 
     @check_has_placed
-    def rotate_south(self):
+    def rotate(self, which: str):
+        next_direction = None
+        if which == "LEFT":
+            next_direction = (DIRECTION[self.facing] + 1) % 4
+        elif which == "RIGHT":
+            next_direction = (DIRECTION[self.facing] - 1) % 4
 
-        # Testing only, will remove in the future
-        self.facing = "SOUTH"
-
-    # This function receive commands from the console, return an error message if wrong command is entered
-    def compute_command(self, command: str, pos_x: int | None, pos_y: int | None):
-
-        if command == "PLACE":
-
-            output = self.place(pos_x, pos_y)
-
-            return output
-
-        elif command == "REPORT":
-
-            self.report()
-
-        else:
-
-            return "Nothing happens"
+        self.facing = INVERSE_DIRECTION[next_direction]
 
