@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='robot-toy',
-      version='0.1',
+      version='0.2',
       description='A console program that controls a car robot on a 5x5 grid.',
       url='https://github.com/phurichpusapanich-itsmy/toy_robot_game',
       author='Phurich Pusapanich',
