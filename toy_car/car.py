@@ -1,5 +1,6 @@
 from toy_car.settings import DIRECTION, DIRECTION_MOVE_VALUES, INVERSE_DIRECTION
 from toy_car.table import Table
+from toy_car.root_logger import logger
 
 
 # Decorator for some functions in car to check if the car has been placed or not.
@@ -59,7 +60,7 @@ class Car:
     @check_has_placed
     def report(self):
 
-        print("The car is at {0}, {1} and is facing {2}".format(self.x, self.y, self.facing))
+        logger.info("The car is at {0}, {1} and is facing {2}".format(self.x, self.y, self.facing))
 
     @check_has_placed
     def move(self):
@@ -71,13 +72,20 @@ class Car:
             can_move = self.table.check_position(self.x, self.y + move_val)
             if can_move:
                 self.y = self.y + move_val
+                logger.debug("Moving to {0} {1}".format(self.x, self.y))
                 return True
+            else:
+                logger.debug("Cannot move to {0} {1}".format(self.x, self.y + move_val))
         # Move +1 if EAST and MOVE -1 if WEST
         elif self.facing == "WEST" or self.facing == "EAST":
             can_move = self.table.check_position(self.x + move_val, self.y)
             if can_move:
+                logger.debug("Moving to {0} {1}".format(self.x, self.y))
                 self.x = self.x + move_val
                 return True
+
+            else:
+                logger.debug("Cannot move to {0} {1}".format(self.x + move_val, self.y))
 
         return False
 

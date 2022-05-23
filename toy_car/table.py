@@ -1,13 +1,16 @@
 class Table:
 
+    """
+        5x5 grid table for the toy car to run on.
+        The width (x) and the height (x) is hard coded as the exact width of the table 5x5 is given.
+
+    """
+
     def __init__(self):
 
         # Set default width of this table to 5 and 5
         self.width = 5
         self.height = 5
-
-        # This array marks where the car is at
-        self.array_representation = [[0 for i in range(self.width)] for j in range(self.height)]
 
     def check_position(self, x, y):
 

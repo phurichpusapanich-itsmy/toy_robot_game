@@ -31,7 +31,7 @@ class TestingCommandFunction(unittest.TestCase):
         self.assertRaises(ValueError, convert_and_validate_first_command, 'PLAZE', 0, 1, "SOOTH")
 
     # If the file is empty, the program should not construct a car object.
-    @patch('toy_car.main.run_car')
+    @patch('toy_car.runner.run_car')
     def test_run_car(self, mock):
 
         read_commands(TEST_EMPTY_DATA_FILENAME)
