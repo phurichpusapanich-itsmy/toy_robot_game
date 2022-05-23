@@ -1,6 +1,15 @@
-from toy_car.utilities import check_has_placed
 from toy_car.settings import DIRECTION, DIRECTION_MOVE_VALUES, INVERSE_DIRECTION
 from toy_car.table import Table
+
+
+# Decorator for some functions in car to check if the car has been placed or not.
+def check_has_placed(f):
+    def wrapper(*args):
+        if args[0].has_placed:
+            return f(*args)
+        else:
+            raise ValueError("Car has not been placed")
+    return wrapper
 
 
 class Car:
@@ -11,7 +20,7 @@ class Car:
 
     Function:
         place - params: x, y, facing
-        rotate - params: which(LEFT, RIGHT)
+        rotate - params: which - (LEFT or RIGHT else do nothing)
         move - params:
         compute_command - params: command
 
@@ -69,8 +78,6 @@ class Car:
             if can_move:
                 self.x = self.x + move_val
                 return True
-
-        print("Cannot move")
 
         return False
 
