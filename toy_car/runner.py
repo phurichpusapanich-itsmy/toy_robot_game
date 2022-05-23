@@ -1,14 +1,15 @@
 from toy_car.car import Car
 from toy_car.table import Table
 
-"""
-    This is a 5x5 table top, 
-        - 0 = No car
-        - 1 = Has car
-"""
-
 
 def run_car(valid_commands):
+
+    """
+    Takes in validated commands from command_reader.py, construct table and assign it to car.
+
+    Move/Rotate/Place the car based on the valid commands
+
+    """
 
     # Allocate a car to a table, but the car has not been placed yet.
     table = Table()

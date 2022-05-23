@@ -1,15 +1,17 @@
 import argparse
-from toy_car.main import run_car
-
-list_of_commands = ('MOVE', 'REPORT', 'LEFT', 'RIGHT', 'PLACE')
+from toy_car.runner import run_car
+from toy_car.root_logger import logger
+from toy_car.settings import LIST_OF_CAR_COMMANDS
 
 
 def convert_and_validate_first_command(c1, c2, c3, c4):
 
-    # There are couple rules that need to be followed
-    # 1st index is a string PLACE
-    # 2nd index is a positive integer
-    # 3rd index is a string NORTH SOUTH EAST WEST
+    """
+    There are couple rules that need to be followed
+    1st index is a string PLACE
+    2nd index is a positive integer
+    3rd index is a string NORTH SOUTH EAST WEST
+    """
 
     r1 = c1
     r2 = c2
@@ -37,6 +39,11 @@ def convert_and_validate_first_command(c1, c2, c3, c4):
 
 def validate_and_clean_commands(command):
 
+    """
+    Validate lines from the txt file, commands that are not in the list are discarded.
+    If PLACE parameters are incorrect, raise errors.
+    """
+
     # This will discard a command until valid PLACE has been put.
     if command.startswith("PLACE"):
 
@@ -53,7 +60,7 @@ def validate_and_clean_commands(command):
 
         else:
 
-            raise ValueError("Incorrect parameter are PLACE.")
+            raise ValueError("Incorrect parameter in PLACE")
 
     else:
 
@@ -66,6 +73,7 @@ def read_commands(file_name):
     lines = file.readlines()
 
     valid_commands = []
+
     place_found = False
 
     for i, line in enumerate(lines):
@@ -76,6 +84,8 @@ def read_commands(file_name):
 
         if strip_line.startswith("PLACE"):
 
+            logger.debug('Found a PLACE command at line {0}'.format(i + 1))
+
             place_found = True
 
         # if place has been found, proceed to run validation, else keep skipping
@@ -83,33 +93,44 @@ def read_commands(file_name):
 
             if strip_line != "":
 
-                is_command = line.startswith(list_of_commands)
+                is_command = line.startswith(LIST_OF_CAR_COMMANDS)
 
                 if is_command:
 
                     command = validate_and_clean_commands(strip_line)
 
                     valid_commands.append(command)
+                else:
+                    logger.debug("Removing {0} command as it is not supported".format(line))
 
     file.close()
 
-    print("Your commands are valid, proceeding to construct a robot.")
-    print(valid_commands)
-
     if len(valid_commands) > 0:
 
+        logger.debug(valid_commands)
+
         run_car(valid_commands)
+
+    else:
+
+        logger.warning("No valid commands found in {0}".format(file_name))
 
 
 def main():
 
+    """
+    Read commands from .txt file
+    """
+
     parser = argparse.ArgumentParser(prog="drive")
     parser.add_argument('file', help='The input file for the robot. This file need to be placed on the root directory')
+    parser.add_argument('--verbose', nargs='?', const='arg_was_not_given', help='Print out debug logs')
 
     args = parser.parse_args()
 
+    if args.verbose is not None:
+        logger.setLevel("DEBUG")
+    else:
+        logger.setLevel("INFO")
+
     read_commands(args.file)
-
-    print("Finish reading the file")
-
-
