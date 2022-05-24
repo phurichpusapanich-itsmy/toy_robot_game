@@ -13,25 +13,52 @@ The robot can:
 
 ## Features
 
-- Toy Robot Car Console Application
+- Command reader for controlling toy robot car
+- Debug mode
 - Unit testing
 
-## Tech
 
-- Python 3.10.2 (Lower version of Python 3 should be able to run this program as well)
+## Install Python
 
+This program is build with python 3.10.4, however lower python 3 versions should be able to run this application
+
+You can use Anaconda which allows you to create and switch python version easily.
+
+Find the suitable installer for your OS in https://www.anaconda.com/products/distribution
+
+Once install, launch Anaconda prompt to install required Python version.
+
+```
+conda create -n myenv python=3.10.4
+```
+
+Activate new conda environment by
+
+```
+conda activate myenv
+```
+
+From now, you can use the new environment you have just created to run this program, or use it as a base for another virtual environment.
 
 ## How to run
 
 Fork and clone this repository, or download the zip file and extract it.
 
-After that you will need to pip install
+Then, you will need to move into the folder you've just cloned/extracted then run the pip install command.
 
 ```sh
 pip install .
 ```
 
 The program runs with an input file of a .txt format. The sample file has been provided (data.txt)
+
+The program only accepts these commands,
+
+- PLACE x, y, <NORTH|WEST|EAST|SOUTH>
+- MOVE
+- LEFT
+- RIGHT
+- REPORT
 
 Sample input file
 
@@ -49,10 +76,16 @@ Run the drive command with the input file as an argument.
 drive [INPUT_FILE]
 ```
 
+Run the command with --verbose to show more debug information
+
+```sh
+drive [INPUT_FILE] --verbose
+```
+
 ## How to test
 
 - After you have updated your code, you can run the test with.
-- To add more tests, please checkout the test files in /toy_car/tests
+- To add more tests, please checkout the test files in /tests
 
 ```sh
 python setup.py test
