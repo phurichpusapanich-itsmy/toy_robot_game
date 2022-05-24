@@ -11,5 +11,5 @@ setup(name='robot-toy',
       entry_points={
             'console_scripts': ['drive=toy_car.command_reader:main'],
       },
-      test_suite="toy_car.tests",
+      test_suite="tests",
       zip_safe=False)
